@@ -10,3 +10,5 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
 Imports: MASS, combinat, stats
+URL: https://github.com/nySTAT/COLP
+BugReports: https://github.com/nySTAT/COLP/issues
