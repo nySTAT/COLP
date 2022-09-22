@@ -3,7 +3,7 @@ require(MASS)
 
 COLP_exhaustive = function(y,x){
   nlev_y = nlevels(y)
-  P =  permn(nlev_y)
+  P =  combinat::permn(nlev_y)
   nP = length(P)
   xCy = rep(0,nP)
   for (l in 1:nP){
@@ -11,7 +11,7 @@ COLP_exhaustive = function(y,x){
     levels(yy)=as.character(P[[l]])
     yy=as.factor(as.numeric(as.character(yy)))
     if (nlevels(yy)>2){
-      xCy[l]=logLik(polr(yy~x,method="logistic"))
+      xCy[l]=logLik(MASS::polr(yy~x,method="logistic"))
     }else{
       xCy[l]=logLik(glm(yy~x,family=binomial))
     }
@@ -32,7 +32,7 @@ COLP_greedy = function(y,x,P=NULL){
   nly=nlevels(yy)
   yy=as.factor(as.numeric(as.character(yy)))
   if (nly>2){
-    xCy=logLik(polr(yy~x,method="logistic"))
+    xCy=logLik(MASS::polr(yy~x,method="logistic"))
   }else{
     xCy=logLik(glm(yy~x,family=binomial))
   }
@@ -50,7 +50,7 @@ COLP_greedy = function(y,x,P=NULL){
         levels(yy)=as.character(Ps)
         yy=as.factor(as.numeric(as.character(yy)))
         if (nly>2){
-          xCys=logLik(polr(yy~x,method="logistic"))
+          xCys=logLik(MASS::polr(yy~x,method="logistic"))
         }else{
           xCys=logLik(glm(yy~x,family=binomial))
         }
@@ -68,7 +68,7 @@ COLP_greedy = function(y,x,P=NULL){
   return(list(M=xCy,P=P))
 }
 
-#' @title Causal Discovery for Bivariate Cateogrical Data
+#' @title Causal Discovery for Bivariate Categorical Data
 #'
 #' @description Estimate a causal directed acyclic graph (DAG) for ordinal cateogrical data with greedy or exhaustive search.
 #'
@@ -93,12 +93,12 @@ COLP=function(y,x,algo="E"){
   }
 
   if (nlevels(x)>2){
-    xCy_optim = xCy$M+logLik(polr(x~1,method="logistic"))
+    xCy_optim = xCy$M+logLik(MASS::polr(x~1,method="logistic"))
   }else{
     xCy_optim = xCy$M+logLik(glm(x~1,family=binomial))
   }
   if (nlevels(y)>2){
-    yCx_optim = yCx$M+logLik(polr(y~1,method="logistic"))
+    yCx_optim = yCx$M+logLik(MASS::polr(y~1,method="logistic"))
   }else{
     yCx_optim = yCx$M+logLik(glm(y~1,family=binomial))
   }
