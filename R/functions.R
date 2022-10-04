@@ -11,9 +11,9 @@ COLP_exhaustive = function(y,x){
     levels(yy)=as.character(P[[l]])
     yy=as.factor(as.numeric(as.character(yy)))
     if (nlevels(yy)>2){
-      xCy[l]=logLik(MASS::polr(yy~x,method="logistic"))
+      xCy[l]=stats::logLik(MASS::polr(yy~x,method="logistic"))
     }else{
-      xCy[l]=logLik(glm(yy~x,family=binomial))
+      xCy[l]=stats::logLik(stats::glm(yy~x,family=stats::binomial))
     }
   }
   i = which.max(xCy)
@@ -32,9 +32,9 @@ COLP_greedy = function(y,x,P=NULL){
   nly=nlevels(yy)
   yy=as.factor(as.numeric(as.character(yy)))
   if (nly>2){
-    xCy=logLik(MASS::polr(yy~x,method="logistic"))
+    xCy=stats::logLik(MASS::polr(yy~x,method="logistic"))
   }else{
-    xCy=logLik(glm(yy~x,family=binomial))
+    xCy=stats::logLik(stats::glm(yy~x,family=stats::binomial))
   }
   xCys = xCy
   improv = TRUE
@@ -50,9 +50,9 @@ COLP_greedy = function(y,x,P=NULL){
         levels(yy)=as.character(Ps)
         yy=as.factor(as.numeric(as.character(yy)))
         if (nly>2){
-          xCys=logLik(MASS::polr(yy~x,method="logistic"))
+          xCys=stats::logLik(MASS::polr(yy~x,method="logistic"))
         }else{
-          xCys=logLik(glm(yy~x,family=binomial))
+          xCys=stats::logLik(stats::glm(yy~x,family=stats::binomial))
         }
         if (xCys>xCy){
           P=Ps
@@ -70,12 +70,12 @@ COLP_greedy = function(y,x,P=NULL){
 
 #' @title Causal Discovery for Bivariate Categorical Data
 #'
-#' @description Estimate a causal directed acyclic graph (DAG) for ordinal cateogrical data with greedy or exhaustive search.
+#' @description Estimate the causal direction between two categorical variables.
 #'
 #' @param y factor, a potential effect variable
 #' @param x factor, a potential cause variable
 #' @param algo exhaustive search (algo="E") of category ordering or greedy search (algo="G")
-#' @return A list of length 3. cd = 1 if x causes y; cd = 0 otherwise. P is the optimal odering of the effect variable. epsilon is the difference in log-likelihood favoring x causes y.
+#' @return A list of length 3. cd = 1 if x causes y; cd = 0 otherwise. P is the optimal ordering of the effect variable. epsilon is the difference in log-likelihood favoring x causes y.
 #'
 #' @export
 #'
@@ -93,14 +93,14 @@ COLP=function(y,x,algo="E"){
   }
 
   if (nlevels(x)>2){
-    xCy_optim = xCy$M+logLik(MASS::polr(x~1,method="logistic"))
+    xCy_optim = xCy$M+stats::logLik(MASS::polr(x~1,method="logistic"))
   }else{
-    xCy_optim = xCy$M+logLik(glm(x~1,family=binomial))
+    xCy_optim = xCy$M+stats::logLik(stats::glm(x~1,family=stats::binomial))
   }
   if (nlevels(y)>2){
-    yCx_optim = yCx$M+logLik(MASS::polr(y~1,method="logistic"))
+    yCx_optim = yCx$M+stats::logLik(MASS::polr(y~1,method="logistic"))
   }else{
-    yCx_optim = yCx$M+logLik(glm(y~1,family=binomial))
+    yCx_optim = yCx$M+stats::logLik(stats::glm(y~1,family=stats::binomial))
   }
 
   if (xCy_optim>yCx_optim){
