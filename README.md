@@ -1,8 +1,8 @@
 # COLP
 
-COLP is an R package for discovering causality from observational categorical data, developed and maintained by Yang Ni at Texas A&M University.
+COLP is an R package (available on CRAN) for discovering causality from observational categorical data, developed and maintained by Yang Ni at Texas A&M University.
 
-The package can also be downloaded at https://web.stat.tamu.edu/~yni/files/COLP_0.1.0.tar.gz.
+The package can also be downloaded at https://web.stat.tamu.edu/~yni/files/COLP_1.0.0.tar.gz.
 
 
 #### Reference:  
